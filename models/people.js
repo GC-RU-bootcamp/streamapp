@@ -1,7 +1,7 @@
-/* jshint indent: 2 */
+var bcrypt = require("bcrypt-nodejs");
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('people', {
+  var People = sequelize.define('People', {
     id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
@@ -13,7 +13,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     logon_pwd: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.STRING(60),
       allowNull: false
     },
     fst_nam: {
@@ -40,6 +40,10 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER(1),
       allowNull: true
     },
+    photo: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+    },
     created_at: {
       type: DataTypes.DATE,
       allowNull: false,
@@ -58,6 +62,43 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     }
   }, {
-    tableName: 'people'
+    timestamps: false
   });
+
+  People.prototype.validPassword = function(password) {
+     return bcrypt.compareSync(password, this.logon_pwd);
+  };
+
+  People.hook("beforeCreate", function(People) {
+     People.logon_pwd = bcrypt.hashSync(People.logon_pwd, bcrypt.genSaltSync('10'), null);
+  });
+ 
+
+  People.prototype.createUser = function(newUser, callback){
+    bcrypt.genSalt(10, function(err, salt) {
+        bcrypt.hash(newUser.logon_pwd, salt, function(err, hash) {
+            newUser.logon_pwd = hash;
+            newUser.save(callback);
+        });
+    });
+  };
+  
+  People.prototype.getUserByUsername = function(logon_id, callback){
+    var query = {logon_id: logon_id};
+    People.findOne(query, callback);
+  };
+  
+  People.prototype.getUserById = function(id, callback){
+    People.findById(id, callback);
+  };
+  
+  People.prototype.comparePassword = function(candidatePassword, hash, callback){
+    bcrypt.compare(candidatePassword, hash, function(err, isMatch) {
+        if(err) throw err;
+        callback(null, isMatch);
+    });
+  };
+
+  return People;
+
 };
