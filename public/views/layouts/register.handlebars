@@ -1,0 +1,47 @@
+<h2 class="page-header">Register New User</h2>
+{{#if user}}
+        <div class="alert alert-danger">Username is not available; try again</div> 
+{{/if}}
+{{#if mail}}
+        <div class="alert alert-danger">There is already an account with this email address; try logging in again or reset your password</div> 
+{{/if}} 
+{{#if errors}}
+      {{#each errors}}
+        <div class="alert alert-danger">{{msg}}</div>
+      {{/each}}
+{{/if}}
+<form method="post" action="/users/register">
+   <div class="form-group">
+    <label>Trainer?</label>
+    <input type="text" class="form-control" placeholder="Role" name="role">
+  </div>
+  <div class="form-group">
+    <label>First Name</label>
+    <input type="text" class="form-control" placeholder="First Name" name="fst_nam">
+  </div>
+  <div class="form-group">
+    <label>Last Name</label>
+    <input type="text" class="form-control" placeholder="Last Name" name="lst_nam">
+  </div>
+  <div class="form-group">
+    <label>Username</label>
+    <input type="text" class="form-control" placeholder="Username" name="logon_id">
+  </div>
+   <div class="form-group">
+    <label>Email</label>
+    <input type="email" class="form-control" placeholder="Email" name="email_adr">
+  </div>
+  <div class="form-group">
+    <label>Cell Phone</label>
+    <input type="text" class="form-control" placeholder="Cell Phone" name="cell_phone">
+  </div>
+   <div class="form-group">
+    <label>Password</label>
+    <input type="password" class="form-control" placeholder="Password" name="logon_pwd">
+  </div>
+  <div class="form-group">
+    <label>Confirm Password</label>
+    <input type="password" class="form-control" placeholder="Password" name="logon_pwd2">
+  </div>
+  <button type="submit" class="btn btn-default">Submit</button>
+</form>

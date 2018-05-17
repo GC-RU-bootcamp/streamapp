@@ -1,7 +1,7 @@
 CREATE DATABASE sessionMgrDB;
 USE sessionMgrDB;
 
-CREATE TABLE people (
+CREATE TABLE People (
   id         INTEGER(11) AUTO_INCREMENT NOT NULL,
   logon_id   VARCHAR(50)  NOT NULL,
   logon_pwd  VARCHAR(50)  NOT NULL,
@@ -11,6 +11,7 @@ CREATE TABLE people (
   cell_phone VARCHAR(20)  NOT NULL,
   role       VARCHAR(30)  NOT NULL,
   acct_lock  BOOLEAN,
+  photo      VARCHAR(255) NULL,
   created_at TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
   created_by VARCHAR(50)  NOT NULL,
   lst_mod_at TIMESTAMP    NULL,
@@ -19,7 +20,7 @@ CREATE TABLE people (
 );
 
 
-CREATE TABLE people_lgn_hist (
+CREATE TABLE People_lgn_hist (
   id         INTEGER(11)  AUTO_INCREMENT NOT NULL,
   people_id  INTEGER(11)  NOT NULL,
   logon_id   VARCHAR(50)  NOT NULL,
@@ -28,7 +29,7 @@ CREATE TABLE people_lgn_hist (
   PRIMARY KEY (id)
 );
 
-CREATE TABLE sessions (
+CREATE TABLE Sessions (
   id             INTEGER(11) AUTO_INCREMENT NOT NULL,
   people_id      INTEGER(11)    NOT NULL,
   name           VARCHAR(255)   NOT NULL,
@@ -45,19 +46,19 @@ CREATE TABLE sessions (
   lst_mod_at     TIMESTAMP    NULL ,
   lst_mod_by     VARCHAR(50)  ,
   PRIMARY KEY(id),
-  CONSTRAINT FOREIGN KEY sessions_fk1 (people_id) REFERENCES people(id)
+  CONSTRAINT FOREIGN KEY sessions_fk1 (people_id) REFERENCES People(id)
 
  );
 
 -- Keeps master list of search tags to control session search
- CREATE TABLE search_tags (
+ CREATE TABLE Search_tags (
   id             INTEGER(11) AUTO_INCREMENT NOT NULL,
   tag            VARCHAR(50),
   PRIMARY KEY (id)  
  );
 
 -- Associates tags to sessions for returning the session
- CREATE TABLE session_tags (
+ CREATE TABLE Session_tags (
   session_id  INTEGER(11),
   tag              VARCHAR(50),
   PRIMARY KEY(tag,session_id)
@@ -65,7 +66,7 @@ CREATE TABLE sessions (
 
 -- people_session keeps track of each person signed up
 -- for a session with a host.
- CREATE TABLE people_session (
+ CREATE TABLE People_session (
   people_id       INTEGER(11)  NOT NULL,
   session_id      INTEGER(11)  NOT NULL,
   comment         VARCHAR(2000),
@@ -76,11 +77,11 @@ CREATE TABLE sessions (
   lst_mod_at      TIMESTAMP     NULL,
   lst_mod_by      VARCHAR(50)  ,
   PRIMARY KEY(people_id,session_id),
-  CONSTRAINT FOREIGN KEY people_session_fk1 (people_id) REFERENCES people(id),
-  CONSTRAINT FOREIGN KEY people_session_fk1 (session_id) REFERENCES sessions(id)
+  CONSTRAINT FOREIGN KEY people_session_fk1 (people_id) REFERENCES People(id),
+  CONSTRAINT FOREIGN KEY people_session_fk1 (session_id) REFERENCES Sessions(id)
  );
 
- CREATE TABLE host_profile (
+ CREATE TABLE Post_profile (
   people_id       INTEGER(11)  NOT NULL,
   avg_rating      DECIMAL(10,1),
   bio             VARCHAR(2000),
@@ -90,5 +91,5 @@ CREATE TABLE sessions (
   lst_mod_by      VARCHAR(50)  ,
   photo           BLOB,
   PRIMARY KEY(people_id),
-  CONSTRAINT FOREIGN KEY host_profile_fk1 (people_id) REFERENCES people(id)    
+  CONSTRAINT FOREIGN KEY host_profile_fk1 (people_id) REFERENCES People(id)    
  );
