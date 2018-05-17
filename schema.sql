@@ -4,7 +4,7 @@ USE sessionMgrDB;
 CREATE TABLE People (
   id         INTEGER(11) AUTO_INCREMENT NOT NULL,
   logon_id   VARCHAR(50)  NOT NULL,
-  logon_pwd  VARCHAR(50)  NOT NULL,
+  logon_pwd  BINARY(60)   NOT NULL,
   fst_nam    VARCHAR(50)  NOT NULL,
   lst_nam    VARCHAR(50)  NOT NULL,
   email_adr  VARCHAR(100) NOT NULL,
@@ -81,7 +81,7 @@ CREATE TABLE Sessions (
   CONSTRAINT FOREIGN KEY people_session_fk1 (session_id) REFERENCES Sessions(id)
  );
 
- CREATE TABLE Post_profile (
+ CREATE TABLE Host_profile (
   people_id       INTEGER(11)  NOT NULL,
   avg_rating      DECIMAL(10,1),
   bio             VARCHAR(2000),

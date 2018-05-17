@@ -13,7 +13,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     logon_pwd: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.STRING(60),
       allowNull: false
     },
     fst_nam: {
@@ -70,7 +70,7 @@ module.exports = function(sequelize, DataTypes) {
   };
 
   People.hook("beforeCreate", function(People) {
-     People.logon_pwd = bcrypt.hashSync(People.logon_pwd, bcrpyt.genSaltSync('10'), null);
+     People.logon_pwd = bcrypt.hashSync(People.logon_pwd, bcrypt.genSaltSync('10'), null);
   });
  
 
