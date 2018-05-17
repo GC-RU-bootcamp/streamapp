@@ -7,11 +7,21 @@ require('dotenv').config();
 var db = require("../models");
 var passport = require("../config/passport");
 
+//Require uuid
+var uuidv4 = require('uuid/v4');
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
+
+//Store operations
+var Sequelize = require('sequelize');
+var Op = Sequelize.Op
+
+//Require momentjs
+var moment = require('moment');
 
 module.exports = function (app) {
   // Using the passport.authenticate middleware with our local strategy.
@@ -91,7 +101,7 @@ module.exports = function (app) {
           cell_phone: fields.cell,
           role: fields.role,
           created_by: fields.createdBy
-      }).then(function () {
+      }).then(function (userInfo) {
          // Upon successful signup, log user in
          req.login(userInfo, function (err) {
            if (err) {
@@ -132,4 +142,85 @@ module.exports = function (app) {
     }
   });
 
+  // Route for posting a new session to the database
+  app.post("/api/host/create-session", function (req, res){
+    if(!req.user){
+      res.status(403).end();
+    }
+    else{
+      var newSession = req.body;
+      //On post create a uuid for the session
+      db.sessions.create({
+        people_id: newSession.people_id,
+        name: newSession.name,
+        description: newSession.description,
+        item_date: newSession.item_date,
+        cost: newSession.cost,
+        conn_info: uuidv4(),
+        created_by: newSession.created_by,
+      }).then(function(){
+        res.status(201).end();
+      }).catch(function(){
+        res.status(500).end();
+      });
+    }
+  });
+
+  //Route fpr getting back all the host's available sessions
+  app.get("/api/host/my-sessions", function(req, res){
+    db.sessions.findAll({
+      where:{
+        people_id: req.user.id,
+        item_date: {
+          [Op.gte]: moment()
+        }
+      }
+    }).then(function(result){
+      res.json(result);
+    }).catch(function(){
+      res.status(500).end()
+    })
+  });
+
+  //Route for getting back all the sessions in the db
+  app.get("/api/host/show-sessions", function(req, res){
+    if(!req.user){
+      res.status(403).end();
+    }
+    else{
+      db.sessions.findAll().then(function(result){
+        res.json(result);
+      });
+    }
+  });
+
+  //Route fpr getting back all the host's past sessions
+  app.get("/api/host/session-history", function(req, res){
+    db.sessions.findAll({
+      where:{
+        people_id: req.user.id,
+        item_date: {
+          [Op.lt]: moment()
+        }
+      }
+    }).then(function(result){
+      res.json(result);
+    }).catch(function(){
+      res.status(500).end()
+    })
+  });
+
+  //Route for getting back one session by it's ID
+  app.get("/api/host/:sessionID", function(req, res){
+    db.sessions.findOne({
+      where:{
+        id: req.params.sessionID
+      }
+    }).then(function(result){
+      res.json(result);
+    }).catch(function(){
+      res.status(500).end()
+    })
+  });
+  
 };
