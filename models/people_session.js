@@ -1,25 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('people_session', {
-    people_id: {
-      type: DataTypes.INTEGER(11),
-      allowNull: false,
-      primaryKey: true,
-      references: {
-        model: 'People',
-        key: 'id'
-      }
-    },
-    session_id: {
-      type: DataTypes.INTEGER(11),
-      allowNull: false,
-      primaryKey: true,
-      references: {
-        model: 'sessions',
-        key: 'id'
-      }
-    },
+  var people_session = sequelize.define('people_session', {
     comment: {
       type: DataTypes.STRING(2000),
       allowNull: true
@@ -52,4 +34,27 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     tableName: 'people_session'
   });
+
+
+  people_session.associate = function(models) {
+    people_session.belongsTo(models.People, {
+      foreignKey: "people_id", targetKey: "id"
+    });
+    people_session.belongsTo(models.sessions, {
+      foreignKey: "session_id", targetKey: "id"
+    });
+  }; 
+  
+  return people_session;
 };
+
+/*    people_id: {
+  type: DataTypes.INTEGER(11),
+  allowNull: false,
+  primaryKey: true
+},
+session_id: {
+  type: DataTypes.INTEGER(11),
+  allowNull: false,
+  primaryKey: true
+},*/

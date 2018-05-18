@@ -1,7 +1,6 @@
 /* jshint indent: 2 */
-
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('sessions', {
+  var sessions = sequelize.define('sessions', {
     id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
@@ -10,11 +9,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     people_id: {
       type: DataTypes.INTEGER(11),
-      allowNull: false,
-      references: {
-        model: 'People',
-        key: 'id'
-      }
+      allowNull: false
     },
     name: {
       type: DataTypes.STRING(255),
@@ -73,4 +68,15 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     tableName: 'sessions'
   });
+
+  sessions.associate = function(models) {
+    // We're saying that a Post should belong to an Author
+    // A Post can't be created without an Author due to the foreign key constraint
+    sessions.belongsTo(models.People, {
+      foreignKey: "people_id", targetKey: "id"
+      }
+    );
+  };
+
+  return sessions;
 };

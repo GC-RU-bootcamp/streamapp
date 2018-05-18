@@ -7,11 +7,21 @@ require('dotenv').config();
 var db = require("../models");
 var passport = require("../config/passport");
 
+//Require uuid
+var uuidv4 = require('uuid/v4');
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
+
+//Store operations
+var Sequelize = require('sequelize');
+var Op = Sequelize.Op
+
+//Require momentjs
+var moment = require('moment');
 
 module.exports = function (app) {
   // Using the passport.authenticate middleware with our local strategy.
@@ -91,7 +101,7 @@ module.exports = function (app) {
           cell_phone: fields.cell,
           role: fields.role,
           created_by: fields.createdBy
-      }).then(function () {
+      }).then(function (userInfo) {
          // Upon successful signup, log user in
          req.login(userInfo, function (err) {
            if (err) {
@@ -132,4 +142,185 @@ module.exports = function (app) {
     }
   });
 
+  // Route for posting a new session to the database
+  app.post("/api/host/create-session", function (req, res){
+    if(!req.user){
+      res.status(403).end();
+    }
+    else{
+      var newSession = req.body;
+      //On post create a uuid for the session
+      db.sessions.create({
+        people_id: newSession.people_id,
+        name: newSession.name,
+        description: newSession.description,
+        item_date: newSession.item_date,
+        cost: newSession.cost,
+        min_attendees: newSession.min_attendees,
+        max_attendees: newSession.max_attendees,
+        confirmed: newSession.confirmed,
+        conn_info: uuidv4(),
+        created_by: newSession.created_by,
+      }).then(function(){
+        res.status(201).end();
+      }).catch(function(){
+        res.status(500).end();
+      });
+    }
+  });
+
+  //Route fpr getting back all the host's available sessions
+  app.get("/api/host/my-sessions", function(req, res){
+    db.sessions.findAll({
+      where:{
+        people_id: req.user.id,
+        item_date: {
+          [Op.gte]: moment()
+        }
+      }
+    }).then(function(result){
+      res.json(result);
+    }).catch(function(){
+      res.status(500).end()
+    })
+  });
+
+  //Route for getting back all the sessions in the db
+  app.get("/api/host/show-sessions", function(req, res){
+    if(!req.user){
+      res.status(403).end();
+    }
+    else{
+      db.sessions.findAll().then(function(result){
+        res.json(result);
+      });
+    }
+  });
+
+  //Route fpr getting back all the host's past sessions
+  app.get("/api/host/session-history", function(req, res){
+    db.sessions.findAll({
+      where:{
+        people_id: req.user.id,
+        item_date: {
+          [Op.lt]: moment()
+        }
+      }
+    }).then(function(result){
+      res.json(result);
+    }).catch(function(){
+      res.status(500).end()
+    })
+  });
+
+  //Route for getting back one session by it's ID
+  app.get("/api/host/:sessionID", function(req, res){
+    db.sessions.findOne({
+      where:{
+        id: req.params.sessionID
+      }
+    }).then(function(result){
+      res.json(result);
+    }).catch(function(){
+      res.status(500).end()
+    })
+  });
+
+  // TO-DO || Add functionality to cancel a session that a person is attending 
+  //       || You cannot currently delete a session that someon is attending
+  //Route for deleting a specific session
+  app.delete("/api/host/my-sessions/:sessionID", function(req, res){
+    db.sessions.destroy({
+      where:{
+        id: parseInt(req.params.sessionID)
+      }
+    }).then(function(){
+      res.status(204).end();
+    }).catch(function(err){
+      console.log(err);
+      res.status(500).end();
+    })
+  });
+  
+  //Route for attending a pre-made session
+  app.post("/api/client/attend", function(req, res){
+    db.people_session.create({
+      people_id: req.body.people_id,
+      session_id: req.body.session_id,
+      created_by: req.body.logon_id
+    }).then(function(){
+      res.status(201).end();
+    }).catch(function(){
+      res.status(500).end();
+    })
+  });
+
+  //Route for getting all the session a person is going to attend
+  app.get("/api/client/my-sessions", function(req, res){
+    db.people_session.findAll({
+      where:{
+        people_id: req.user.id
+      },
+      include: [{
+        model: db.sessions,
+        where: {
+          people_id: req.user.id,
+          item_date: {
+            [Op.gte]: moment()
+          }
+        }
+      }]
+    }).then(function(result){
+      res.json(result);
+    }).catch(function(){
+      res.status(500).end()
+    })
+  });
+
+  //Route for getting all the sessions back in the db
+  app.get("/api/client/show-sessions", function(req, res){
+    if(!req.user){
+      res.status(403).end();
+    }
+    else{
+      db.sessions.findAll().then(function(result){
+        res.json(result);
+      });
+    }
+  });
+
+  //Route for getting back all the sessions a client has attended
+  app.get("/api/client/session-history", function(req,res){
+    db.people_session.findAll({
+      where:{
+        people_id: req.user.id
+      },
+      include: [{
+        model: db.sessions,
+        where: {
+          people_id: req.user.id,
+          item_date: {
+            [Op.lt]: moment()
+          }
+        }
+      }]
+    }).then(function(result){
+      res.json(result);
+    }).catch(function(){
+      res.status(500).end()
+    })
+  });
+
+  //Route for getting a specific session back
+  app.get("/api/client/session/:sessionID", function(req,res){
+    db.sessions.findOne({
+      where:{
+        id: req.params.sessionID
+      }
+    }).then(function(result){
+      res.json(result);
+    }).catch(function(){
+      res.status(500).end()
+    })
+  });
 };
