@@ -5,7 +5,7 @@ $(document).ready(function () {
   var passwordInput = $("input#password-input");
   var cellInput     = $("input#cell_phone-input");
   var password2Input= $("input#password2-input");
-  var roleInput     = $("input#role-input");
+  var roleInput     = $("select#role-input");
   var fstNamInput   = $("input#fst_nam-input");
   var lstNamInput   = $("input#lst_nam-input");
   var logonIdInput  = $("input#logon_id-input");
@@ -22,7 +22,7 @@ $(document).ready(function () {
     formData.append("logonId", logonIdInput.val().trim());
     formData.append("password", passwordInput.val().trim());
     formData.append("cell",cellInput.val().trim());
-    formData.append("role",roleInput.val().trim());
+    formData.append("role",roleInput.val());
     formData.append("fstNam",fstNamInput.val().trim());
     formData.append("lstNam", lstNamInput.val().trim());
     formData.append("createdBy",logonIdInput.val().trim());
