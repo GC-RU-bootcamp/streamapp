@@ -42,8 +42,13 @@
             <input type="password" class="form-control" id="password2-input" placeholder="Password" name="logon_pwd2">
           </div>
           <div class="form-group">
-            <label>Trainer?</label>
-            <input type="text" class="form-control" id="role-input" placeholder="Role" name="role">
+            <label>Role</label>
+            <select class="custom-select" id="role-input" name="role">
+                <option selected>Role?</option>
+                <option value="host">Trainer</option>
+                <option value="client">Client</option>
+            </select>         
+            <!-- <input type="text" class="form-control" id="role-input" placeholder="Role" name="role"> -->
           </div>
           <div class="form-group">
             <label>First Name</label>
