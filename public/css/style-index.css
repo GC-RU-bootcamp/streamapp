@@ -1,0 +1,143 @@
+body {
+  background: url("../images/lightpaperfibers.png") repeat;
+  max-width: 960px;
+  justify-content: center;
+  margin: auto;
+  font-family: 'Quattrocento', serif;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  text-align: left;
+  background-color: #fff;
+}
+header, h1, h2 {
+  font-family: 'Oswald', sans-serif;
+}
+
+*, ::after, ::before {
+  box-sizing: border-box;
+}
+.container {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+.blog-header-logo {
+  font-size: 2.50rem;
+}
+.text-dark {
+  color: #343a40!important;
+}
+.blog-header {
+  line-height: 1;
+  border-bottom: 1px solid #e5e5e5;
+}
+.pb-3, .py-3 {
+  padding-bottom: 1rem!important;
+}
+
+.pt-3, .py-3 {
+  padding-top: 1rem!important;
+}
+:root {
+  --jumbotron-padding-y: 3rem;
+}
+
+.jumbotron {
+  padding-top: var(--jumbotron-padding-y);
+  padding-bottom: var(--jumbotron-padding-y);
+  margin-bottom: 0;
+  background-color: #fff;
+}
+@media (min-width: 768px) {
+  .jumbotron {
+    padding-top: calc(var(--jumbotron-padding-y) * 2);
+    padding-bottom: calc(var(--jumbotron-padding-y) * 2);
+  }
+}
+
+.jumbotron p:last-child {
+  margin-bottom: 0;
+}
+
+.jumbotron-heading {
+  font-weight: 300;
+}
+
+.jumbotron .container {
+  max-width: 40rem;
+}
+
+footer {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+footer p {
+  margin-bottom: .25rem;
+}
+
+.box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
+
+#favbutton {
+  font-size: 1rem;
+}
+
+#social-icons {
+  padding-right: 0;
+  padding-left: 7rem;  /* reduced by 1 so it fits on map page GC */
+}
+#sm-icons { 
+  padding: .375rem .375rem;
+}
+
+#sm-icons img{
+  width: 32px;
+  height: 32px;
+  transition-timing-function: linear;
+  transition-duration: 0s;
+}
+#sm-icons img:hover {
+  width: 37px;
+  height: 37px; 
+}
+
+#nav > a.btn-sm{
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.20rem;
+}
+
+#small-features img{
+  width: 140px;
+  height: 140px;
+  transition-timing-function: linear;
+  transition-duration: 0s;
+}
+
+#small-features img:hover{
+  width: 143px;
+  height: 143px;
+}
+
+.like-hidden {
+  /* background: url("../images/Heart_icon_red.png");
+  src: url("../images/Heart_icon_red.png"); */
+  opacity: 0.0;
+  position: absolute;
+  /* top: 0px;
+  left: 0px; */
+  top: 3px;
+    left: 14px;
+}
+
+/* .like { */
+  /* background: url("../images/Heart_icon_red_hollow.png") ; */
+  /* opacity: 1; */
+/* } */
+
+.like:hover {
+  background: url("./assets/images/Heart_icon_red.png") ;
+  opacity: 0.8;
+}
