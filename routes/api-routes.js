@@ -31,10 +31,10 @@ module.exports = function (app) {
     // Since we're doing a POST with javascript, we can't actually redirect that post into a GET request
     // So we're sending the user back the route to the members page because the redirect will happen on the front end
     // They won't get this or even be able to access this page if they aren't authed
-    console.log(req.user);
-    console.log(req.body);
-    console.log("dave");
-    res.json("/members");
+    
+    // console.log(req.user);
+    // console.log(req.body);
+    res.json("/all-sessions");
   });
 
 
@@ -83,7 +83,7 @@ module.exports = function (app) {
                 return res.status(422).json(err);
               }
               console.log(req.user);
-              res.json("/members");
+              res.json("/all-sessions");
             });
           }).catch(function (err) {
             console.log(err)
@@ -109,7 +109,7 @@ module.exports = function (app) {
              return res.status(422).json(err);
            }
            console.log(req.user);
-           return res.json("/members");
+           return res.json("/all-sessions");
          });
         }).catch(function (err) {
           console.log(err);
