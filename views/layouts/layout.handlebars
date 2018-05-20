@@ -21,15 +21,21 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav ml-auto">
-              <li class="nav-item active">
-                <a class="nav-link" href="/api/client/my-sessions">My Sessions<span class="sr-only">(current)</span></a>
+              <li class="nav-item">
+                <a class="nav-link" href="/all-sessions">Find Sessions</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/api/client/show-sessions">Find Sessions</a>
+                <a class="nav-link" href="/my-sessions">My Sessions</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/api/client/session-history">Past Sessions</a>
+                <a class="nav-link" href="/session-history">Past Sessions</a>
               </li>
+
+              {{#if isHost}}
+              <li class="nav-item">
+                <a class="nav-link" href="/create-session">Create Session</a>
+              </li>
+              {{/if}}
             </ul>
             <a class="btn btn-primary border ml-5" href="/logout" role="button"> Logout</a>
           </div>
