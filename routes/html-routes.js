@@ -98,8 +98,8 @@ module.exports = function (app) {
         sessions: result,
       };
       console.log("sessions ======================");
-      console.log(sessions);
-      console.log("END result ======================");
+     // console.log(sessions);
+     // console.log("END result ======================");
 
       res.render('all-sessions', sessions);
     });

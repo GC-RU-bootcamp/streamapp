@@ -245,12 +245,14 @@ module.exports = function (app) {
   });
   
   //Route for attending a pre-made session
-  app.post("/api/client/attend", function(req, res){
+ // app.post("/api/client/attend", function(req, res){
+  app.post("/api/client/register", function(req, res){
     db.people_session.create({
       people_id: req.body.user_id,
       session_id: req.body.session_id,
       created_by: req.body.logon_id
     }).then(function(){
+      // return res.redirect("/all-sessions");
       res.json("/all-sessions");
       // res.status(201).end();
     }).catch(function(){
@@ -268,7 +270,8 @@ module.exports = function (app) {
         // created_by: req.body.logon_id
       }
     }).then(function(){
-        res.json("/all-sessions");
+      // return res.redirect("/all-sessions");
+      res.json("/all-sessions");
       // res.status(204).end();
         // res.status(201).end();
       }).catch(function(){
@@ -282,15 +285,16 @@ module.exports = function (app) {
       where:{
         people_id: req.user.id
       },
-      include: [{
-        model: db.sessions,
-        where: {
-          people_id: req.user.id,
-          item_date: {
-            [Op.gte]: moment()
-          }
-        }
-      }]
+      // this was only returning the host's sessions
+      // include: [{
+      //   model: db.sessions,
+      //   where: {
+      //     people_id: req.user.id,
+      //     item_date: {
+      //       [Op.gte]: moment()
+      //     }
+      //   }
+      // }]
     }).then(function(result){
       res.json(result);
     }).catch(function(){
