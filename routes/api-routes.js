@@ -247,15 +247,34 @@ module.exports = function (app) {
   //Route for attending a pre-made session
   app.post("/api/client/attend", function(req, res){
     db.people_session.create({
-      people_id: req.body.people_id,
+      people_id: req.body.user_id,
       session_id: req.body.session_id,
       created_by: req.body.logon_id
     }).then(function(){
-      res.status(201).end();
+      res.json("/all-sessions");
+      // res.status(201).end();
     }).catch(function(){
       res.status(500).end();
     })
   });
+
+    //Route for attending a pre-made session
+    app.post("/api/client/cancel", function(req, res){
+      db.people_session.destroy({
+        where: {
+          people_id: req.body.user_id,
+          session_id: req.body.session_id
+          // session_id: req.body.session_id,
+        // created_by: req.body.logon_id
+      }
+    }).then(function(){
+        res.json("/all-sessions");
+      // res.status(204).end();
+        // res.status(201).end();
+      }).catch(function(){
+        res.status(500).end();
+      })
+    });
 
   //Route for getting all the session a person is going to attend
   app.get("/api/client/my-sessions", function(req, res){

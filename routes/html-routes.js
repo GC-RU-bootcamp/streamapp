@@ -3,6 +3,10 @@ var path = require("path");
 var db = require("../models");
 var moment = require("moment");
 
+//Store operations
+var Sequelize = require('sequelize');
+var Op = Sequelize.Op
+
 
 
 // Requiring our custom middleware for checking if a user is logged in
@@ -44,27 +48,58 @@ module.exports = function (app) {
     console.log(res);
     console.log("end res======================");
 
-    db.sessions.findAll().then(function(result){
-      console.log("result ======================");
+    db.sessions.findAll({
+      where: {
+        item_date: {
+          [Op.gte]: moment()
+        }
+      },
+     // order: ["item_date", "DESC"],
+      include: [{
+        model: db.People,
+        required: true,
+        // include: [{
+        //     model: db.people_session,
+        //     required: false,
+        //   //   where: {
+        //   //     session_id: this.id
+        //   //   }
+        //   }],
+      }],
+      // include: [{
+      //   model: db.people_session,
+      //   required: false,
+      //   where: {
+      //     session_id: this.id
+      //   }
+      // }],
+
+    }).then(function (result) {
+     // console.log("result ======================");
       for (let i = 0; i < result.length; i++) {
         const row = result[i];
-        console.log(i);
-        console.log(row);
+      //  console.log(i);
+       // console.log(row);
         //let row = row.dataValues;
         let myDate = moment(row.item_date).format("MMMM Do YYYY, h:mm a");
         row.dateFormated = myDate;
-        console.log( row.dateFormated );
-       // data.session_date = 
+      //  console.log(row.dateFormated);
+        // data.session_date = 
       }
-      
-      console.log("END result ======================");
+
+    //  console.log("END result ======================");
       var sessions = {
-        sessions: result,
         title: "All Sessions",
         role: req.user.role,
-        isHost: req.user.role === 'host' ? true : false
+        username: req.user.fst_nam + " " + req.user.lst_nam,
+        logon_id2: String(req.user.logon_id),
+        user_id: req.user.id,
+        isHost: req.user.role === 'host' ? true : false,
+        sessions: result,
       };
-
+      console.log("sessions ======================");
+      console.log(sessions);
+      console.log("END result ======================");
 
       res.render('all-sessions', sessions);
     });
