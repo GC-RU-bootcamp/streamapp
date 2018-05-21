@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+
+  <title>Create-Session</title>
+</head>
+<body>
+    <div class="col-md-10 offset-md-1">
+        <hr class="my-5 bg-primary">
+        <h3>Register your training session!</h3>
+        <div class="form-row mt-4">
+            <div class="col-sm-6 pb-3">
+                <label for="Name">Name</label>
+                <input type="text" class="form-control" placeholder="Title of the session" id="name">
+            </div>
+            <div class="col-sm-6 pb-3">
+                <label for="Date">Date</label>
+                <input type="text" class="form-control" placeholder="YYYY:MM:DD" id="date">
+            </div>
+            <div class="col-sm-6 pb-3">
+                <label for="Time">Time</label>
+                <input type="text" class="form-control" placeholder="HH:MM" id="time">
+            </div>
+            <div class="col-sm-3 pb-3">
+                <label for="Cost">Cost</label>
+                <input type="text" class="form-control" placeholder="Amount needed to sign-up (USD)" id="cost">
+            </div>
+            <div class="col-sm-3 pb-3">
+              <label class="mr-5">Is there a min/max # of clients?</label>
+              <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="null" value="option1">
+                  <label class="form-check-label" for="inlineRadio1">Yes</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="not-null" value="option2">
+                <label class="form-check-label" for="inlineRadio2">No</label>
+              </div>
+            </div>
+            <div class="col-md-6 pb-3">
+              <label for="Description">Description</label>
+              <textarea class="form-control" id="description"></textarea>
+              <small class="text-info">
+                Add information about the session here.
+              </small>
+            </div>
+            <div class="col-sm-3 pb-3" style="visibility: hidden" id="min-col">
+                <label for="minimum">Min clients</label>
+                <input type="text" class="form-control" id="minimum">
+            </div>
+            <div class="col-sm-3 pb-3" style="visibility: hidden" id="max-col">
+                <label for="maximum">Max clients</label>
+                <input type="text" class="form-control"  id="maximum">
+            </div>
+            <div class="col-sm-3 pb-3 mr-auto">
+              <button class="btn btn-primary" id="submit">Submit</button>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+<script
+  src="https://code.jquery.com/jquery-3.3.1.js"
+></script>
+<script src="../js/createSession.js"></script>
+</body>
+</html>
