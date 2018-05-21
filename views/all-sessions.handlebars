@@ -46,7 +46,7 @@
       <a name="remove" id="cancel-{{this.id}}" data-session_id="{{this.id}}" data-user_id="{{../user_id}}" class="btn btn-sm m-1 btn-secondary cancel-btn"
         role="button">cancel</a>
 
-      <a name="join" id="join-{{this.id}}" data-session-id="{{this.id}}" data-user_id="{{../user_id}}" data-logon-id="{{../logon_id2}}"
+      <a name="join" href="/join-session/{{this.conn_info}}" id="join-{{this.id}}" data-session-id="{{this.id}}" data-user_id="{{../user_id}}" data-logon-id="{{../logon_id2}}"
         class="btn btn-sm m-1 btn-secondary join-btn" role="button">Join session</a>
 
       {{!--
@@ -60,7 +60,12 @@
 <script>
 
   $(".btn").click(function (e) {
+
     let action = $(this).attr("name");
+
+    if(action === "join"){
+      console.log("--join--");
+    }
 
     if (action === "add") {
 
