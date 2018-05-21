@@ -38,6 +38,16 @@ module.exports = function (app) {
     res.sendFile(path.join(__dirname, "../public/html/signup.html"));
   });
 
+  app.get("/join-session/:uuid", function (req, res) {
+    // If the user already has an account send them to the members page
+    var uuid = req.params.uuid;
+
+    // if (req.user) {
+    //   return res.redirect("/all-sessions");
+    // }
+    res.sendFile(path.join(__dirname, "../public/html/session.html"));
+  });
+
   // Here we've add our isAuthenticated middleware to this route.
   // If a user who is not logged in tries to access this route they will be redirected to the signup page
   app.get("/all-sessions", isAuthenticated, function (req, res) {
