@@ -4,6 +4,14 @@
   td {
     border: 1px solid black;
   }
+
+  .cancel-btn {
+    display: none
+  }
+
+  .join-btn {
+    display: none
+  }
 </style>
 
 <h4 class="text-center">Welcome {{username}} </h4>
@@ -28,36 +36,34 @@
     <td>{{this.Person.fst_nam}} {{this.Person.lst_nam}}</td>
 
 
-  <!--  { {#unless isHost} } -->
+    <!--  { {#unless isHost} } -->
     <td class="nav-item">
-      <a name="add" id="add-{{this.id}}" 
-           data-session-id="{{this.id}}" 
-           data-user_id="{{../user_id}}"
-           data-logon-id="{{../logon_id2}}"
-           
-            
-        class="btn btn-secondary" href="#" role="button">register</a>
+      <a name="add" id="add-{{this.id}}" data-session-id="{{this.id}}" data-user_id="{{../user_id}}" data-logon-id="{{../logon_id2}}"
+        class="btn btn-sm m-1 btn-secondary register-btn" role="button">register</a>
       {{!--
-      <a href=/api/client/attend> register </a> --}}
+      <a href=/api/client/register> register </a> --}}
 
-      <a name="remove" id="cancel-{{this.id}}" 
-      data-session_id="{{this.id}}" 
-      data-user_id="{{../user_id}}" class="btn btn-secondary" href="#" role="button">cancel</a>
+      <a name="remove" id="cancel-{{this.id}}" data-session_id="{{this.id}}" data-user_id="{{../user_id}}" class="btn btn-sm m-1 btn-secondary cancel-btn"
+        role="button">cancel</a>
+
+      <a name="join" id="join-{{this.id}}" data-session-id="{{this.id}}" data-user_id="{{../user_id}}" data-logon-id="{{../logon_id2}}"
+        class="btn btn-sm m-1 btn-secondary join-btn" role="button">Join session</a>
+
       {{!--
-      <a href=/api/client/attend> register </a> --}}
+      <a href=/api/client/register> register </a> --}}
     </td>
- <!--   { {/unless} } -->
-     {{/each}}
+    <!--   { {/unless} } -->
+    {{/each}}
   </tr>
 </table>
 
 <script>
 
-  $(".btn").click( function (e) {
+  $(".btn").click(function (e) {
     let action = $(this).attr("name");
 
     if (action === "add") {
-      
+
       //alert("add");
       var data = {
         session_id: $(this).attr("data-session-id"),
@@ -67,13 +73,14 @@
       console.log("--add--");
       console.log(data);
       // Performing our AJAX GET request
-      $.post("/api/client/attend", data
+      $.post("/api/client/register", data
 
       )
         // After the data comes back from the API
         .then(function (response) {
           // Storing an array of results in the results variable
           console.log(response);
+          setButtons();
         });
     }
 
@@ -85,15 +92,38 @@
       }
       console.log("--remove--");
       console.log(data);
-      $.post("/api/client/cancel", data )
+      $.post("/api/client/cancel", data)
         // After the data comes back from the API
         .then(function (response) {
           // Storing an array of results in the results variable
           console.log(response);
+          setButtons();
         });
     }
   });
 
+
+  var setButtons = function () {
+    $.get("/api/client/my-sessions")
+      .then(function (response) {
+        // Storing an array of results in the results variable
+        console.log("setButtons----------response");
+        console.log(response);
+        $(".cancel-btn").hide();
+        $(".join-btn").hide();
+        $(".register-btn").show();
+        for (var i = 0; i < response.length; ++i) {
+          var session = response[i];
+          var id = session.session_id;
+          $("#add-" + id).hide();
+          $("#cancel-" + id).show();
+          $("#join-" + id).show();
+
+        }
+      });
+  };
+
+  window.onload = setButtons();
 
 
 
