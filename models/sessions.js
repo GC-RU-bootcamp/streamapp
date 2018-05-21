@@ -76,6 +76,12 @@ module.exports = function(sequelize, DataTypes) {
       foreignKey: "people_id", targetKey: "id"
       }
     );
+
+    sessions.hasMany(models.people_session, {
+      foreignKey: "session_id", targetKey: "id"
+      }
+    );
+
   };
 
   return sessions;

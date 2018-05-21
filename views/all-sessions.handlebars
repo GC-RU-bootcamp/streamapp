@@ -1,26 +1,100 @@
 <style>
-  table, th, td {
+  table,
+  th,
+  td {
     border: 1px solid black;
-}
+  }
 </style>
 
+<h4 class="text-center">Welcome {{username}} </h4>
+<h4>{{title}}</h4>
 
 
 <table>
-   <tr>
+  <tr>
     <th>Name</th>
-    <th>Description</th> 
-    <th>date time</th>
+    <th>Description</th>
+    <th>Date Time</th>
+    <th>Host</th>
+    {{#unless isHost}}
+    <th>register</th>
+    {{/unless}}
   </tr>
-{{#each sessions}}
- <tr>
-<td>{{this.name}}</td> 
-<td>{{this.description}}</td> 
-<td>{{this.dateFormated}}</td> 
-</tr>
-{{/each}}
+  {{#each sessions}}
+  <tr>
+    <td>{{this.name}}</td>
+    <td>{{this.description}}</td>
+    <td>{{this.dateFormated}}</td>
+    <td>{{this.Person.fst_nam}} {{this.Person.lst_nam}}</td>
+
+
+  <!--  { {#unless isHost} } -->
+    <td class="nav-item">
+      <a name="add" id="add-{{this.id}}" 
+           data-session-id="{{this.id}}" 
+           data-user_id="{{../user_id}}"
+           data-logon-id="{{../logon_id2}}"
+           
+            
+        class="btn btn-secondary" href="#" role="button">register</a>
+      {{!--
+      <a href=/api/client/attend> register </a> --}}
+
+      <a name="remove" id="cancel-{{this.id}}" 
+      data-session_id="{{this.id}}" 
+      data-user_id="{{../user_id}}" class="btn btn-secondary" href="#" role="button">cancel</a>
+      {{!--
+      <a href=/api/client/attend> register </a> --}}
+    </td>
+ <!--   { {/unless} } -->
+     {{/each}}
+  </tr>
 </table>
 
+<script>
+
+  $(".btn").click( function (e) {
+    let action = $(this).attr("name");
+
+    if (action === "add") {
+      
+      //alert("add");
+      var data = {
+        session_id: $(this).attr("data-session-id"),
+        logon_id: $(this).attr("data-logon-id"),
+        user_id: $(this).attr("data-user_id"),
+      };
+      console.log("--add--");
+      console.log(data);
+      // Performing our AJAX GET request
+      $.post("/api/client/attend", data
+
+      )
+        // After the data comes back from the API
+        .then(function (response) {
+          // Storing an array of results in the results variable
+          console.log(response);
+        });
+    }
+
+    if (action === "remove") {
+      //alert("remove");
+      var data = {
+        user_id: $(this).attr("data-user_id"),
+        session_id: $(this).attr("data-session_id")
+      }
+      console.log("--remove--");
+      console.log(data);
+      $.post("/api/client/cancel", data )
+        // After the data comes back from the API
+        .then(function (response) {
+          // Storing an array of results in the results variable
+          console.log(response);
+        });
+    }
+  });
 
 
-{{title}}
+
+
+</script>
