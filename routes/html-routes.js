@@ -69,5 +69,7 @@ module.exports = function (app) {
       res.render('all-sessions', sessions);
     });
   });
-
+  app.get("/create-session", function(req,res){
+    res.sendFile(path.join(__dirname, "../public/html/createSession.html"));
+  });
 };

@@ -149,9 +149,8 @@ module.exports = function (app) {
     }
     else{
       var newSession = req.body;
-      //On post create a uuid for the session
-      db.sessions.create({
-        people_id: newSession.people_id,
+      var builtSession = {
+        people_id: req.user.id,
         name: newSession.name,
         description: newSession.description,
         item_date: newSession.item_date,
@@ -160,8 +159,11 @@ module.exports = function (app) {
         max_attendees: newSession.max_attendees,
         confirmed: newSession.confirmed,
         conn_info: uuidv4(),
-        created_by: newSession.created_by,
-      }).then(function(){
+        created_by: req.user.created_by
+      };
+  
+      //On post create a uuid for the session
+      db.sessions.create(builtSession).then(function(){
         res.status(201).end();
       }).catch(function(){
         res.status(500).end();
