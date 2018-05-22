@@ -65,6 +65,7 @@ module.exports = function (app) {
         }
       },
      // order: ["item_date", "DESC"],
+      order: [[ 'item_date', 'ASC']],
       include: [{
         model: db.People,
         required: true,
