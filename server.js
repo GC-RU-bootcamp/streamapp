@@ -65,18 +65,24 @@ db.sequelize.sync({force: false}).then(function() {
 
     socket.on('host-answer',function(data){
       if(data.isHost === 1){
-        var hostInfo = {
-          id: socket.id,
-          roomid: data.uuid
-        };
-        hostIDs.push();
+        var hostInfo = [ socket.id , data.uuid ];
+        hostIDs.push(hostInfo);
       }
-      socket.emit('signal-ready',data.uuid);
+      socket.emit('signal-ready',data);
     })
 
     //Server is listening for a video-offer msg from client-side
     socket.on('video-offer',function(data){
-        socket.broadcast.emit('video-offer',data);
+      if(data.isHost === 1){
+        socket.to(data.uuid).emit('video-offer',data);
+      }else{
+        for(var i = 0; i < hostIDs.length; i++ ){
+          if(data.uuid === hostIDs[i][1]){
+            socket.to(hostIDs[i][0]).emit('video-offer',data);
+          }
+        }
+      }
+        
     });
     //Server is listening for a video-answer msg from client-side
     socket.on('video-answer',function(data){

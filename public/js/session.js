@@ -9,6 +9,11 @@ var constraints = {
   audio:true
 };
 
+var servers = {
+   "iceServers": [{ "url": "stun:stun.l.google.com:19302" }]
+  };
+
+
 var localVideo = document.getElementById('local-video');
 var localAudio = document.getElementById('local-audio');
 
@@ -52,7 +57,7 @@ socket.on('signal-ready',function(data){
     localVideo.srcObject = stream;
     localAudio.srcObject = stream;
 
-    var myPeerConnection = new RTCPeerConnection();
+    var myPeerConnection = new RTCPeerConnection(servers);
    
     myPeerConnection.onicecandidate = handleICECandidateEvent;
     myPeerConnection.onaddstream = handleAddStreamEvent;
@@ -69,13 +74,17 @@ socket.on('signal-ready',function(data){
       myPeerConnection.setLocalDescription(offer);
     })
     .then(function(){
+      var sdpData = {
+        sdp: myPeerConnection.localDescription,
+        uuid: data.uuid,
+        isHost: data.isHost
+      };
+      console.log("I am going to send " + sdpData);
       socket.on('video-answer',function(data){
         var description = new RTCSessionDescription(data.sdp);
         myPeerConnection.setRemoteDescription(description);
       });
-      socket.emit('video-offer',{
-        sdp: myPeerConnection.localDescription
-      });
+      socket.emit('video-offer',sdpData);
     });
   })
   .catch(function(err){
@@ -86,7 +95,7 @@ socket.on('signal-ready',function(data){
 
 socket.on('video-offer',function(data){
 
-  var myPeerConnection = new RTCPeerConnection();
+  var myPeerConnection = new RTCPeerConnection(servers);
   
   myPeerConnection.onicecandidate = handleICECandidateEvent;
   myPeerConnection.onaddstream = handleAddStreamEvent;
