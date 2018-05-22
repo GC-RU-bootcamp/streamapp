@@ -1,20 +1,14 @@
 {
   "development": {
-    "username": "master_user",
-    "password": "aws.engine!1AWS",
-    "database": "sessionMgrDB",
-    "host": "joe-mysql-instance.cl2yqi0bos14.us-east-2.rds.amazonaws.com",
+    "use_env_variable":"JawsDB_URL",
     "dialect": "mysql"
   },
   "test": {
-    "username": "root",
-    "password": null,
-    "database": "database_test_notused",
-    "host": "127.0.0.1",
+    "use_env_variable":"JawsDB_URL",
     "dialect": "mysql"
   },
   "production": {
     "use_env_variable":"JawsDB_URL",
-    "dialect": "mysql"
+    "dialect": "mysql" 
   }
 }  
