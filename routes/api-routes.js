@@ -348,4 +348,25 @@ module.exports = function (app) {
       res.status(500).end()
     })
   });
+
+  //Route for checking whether req.user is the host
+  app.get("/api/session/:uuid", function(req,res){
+    db.sessions.findOne({
+      where:{
+        conn_info: req.params.uuid
+      }
+    }).then(function(result){
+      if(req.user.id === result.people_id){
+        res.json({
+          isHost: 1
+        })
+      } else{
+        res.json({
+          isHost: 0
+        })
+      }
+    }).catch(function(){
+      res.status(500).end()
+    })
+  });
 };
