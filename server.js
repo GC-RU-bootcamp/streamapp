@@ -53,6 +53,11 @@ db.sequelize.sync({force: false}).then(function() {
     //If the specific connection stops remove connection from connections array
     socket.on('disconnect',function(){
       console.log('\t:: Socket :: has lost a connection');
+      // NEW CODE 
+      hostIDs = hostIDs.filter(item => {
+        return item[0] != socket.id
+      });
+      console.log('this should only have no elements! : ' + hostIDs.length);
       Connections.splice(Connections.indexOf(socket),1);
       console.log('\t:: Socket :: has ' + Connections.length + ' connections.');  
     });
@@ -81,6 +86,7 @@ db.sequelize.sync({force: false}).then(function() {
             socket.to(hostIDs[i][0]).emit('video-offer',data);
           }
         }
+        socket.emit('no-host');
       }
         
     });
