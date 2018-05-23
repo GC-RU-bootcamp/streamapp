@@ -10,7 +10,7 @@ var constraints = {
 };
 
 var servers = {
-   "iceServers": [{ "url": "stun:stun.l.google.com:19302" }]
+   "iceServers": [{ "urls": "stun:stun.l.google.com:19302" }]
   };
 
 
@@ -28,23 +28,28 @@ var handleICECandidateEvent = function(event) {
 };
 
 var handleAddStreamEvent = function(event) {
-  console.log(event);
+  console.log('Remote Stream has been received!');
   var newRemoteVideo = document.createElement('video');
   var newRemoteAudio = document.createElement('audio');
+  console.log('Created new remote elements');
   newRemoteVideo.setAttribute('autoplay',true);
   newRemoteAudio.setAttribute('autoplay',true);
   //newRemoteVideo.setAttribute('data-id',);
   //newRemoteAudio.setAttribute('data-id',);
   newRemoteVideo.srcObject = event.stream;
   newRemoteAudio.srcObject = event.stream;
+  console.log('Set remote elements with stream');
   var target = document.getElementById('remote');
   target.appendChild(newRemoteVideo);
   target.appendChild(newRemoteAudio);
+  console.log('Append the remote elements to the target row');
 };
 
 //var handleRemoveStreamEvent = function(){
 //};
-
+socket.on('no-host',function(){
+  console.log('we tried to send a video offer but there was no host!');
+});
 
 socket.emit('room',uuid);
 
@@ -59,7 +64,7 @@ socket.on('host-check',function(){
 socket.on('signal-ready',function(data){
   navigator.mediaDevices.getUserMedia(constraints)
   .then(function(stream){
-
+    console.log('I got the signal to start the webRTC!');
     localStream = stream;
     localVideo.srcObject = stream;
     localAudio.srcObject = stream;
@@ -72,6 +77,7 @@ socket.on('signal-ready',function(data){
     myPeerConnection.addStream(localStream);
   
     socket.on('new-ice-canidate',function(data){
+      console.log('I have got a new ice canidate');
       var canidate = new RTCIceCandidate(data.candidate);
       myPeerConnection.addIceCandidate(canidate);
     });
@@ -91,12 +97,14 @@ socket.on('signal-ready',function(data){
       console.log("I am going to send UUID: " + sdpData.uuid + " isHost: " + sdpData.isHost);
       
       socket.on('video-answer',function(data){
+        console.log('I have received a video answer!');
         var description = new RTCSessionDescription(data.sdp);
         myPeerConnection.setRemoteDescription(description);
       });
 
       socket.emit('video-offer',sdpData);
     });
+      console.log('I sent the video offer!');
   })
   .catch(function(err){
     console.error('mediaStream error : ',err);
@@ -105,7 +113,7 @@ socket.on('signal-ready',function(data){
 
 
 socket.on('video-offer',function(data){
-
+  console.log('I have received a video offer!');
   var myPeerConnection = new RTCPeerConnection(servers);
   
   myPeerConnection.onicecandidate = handleICECandidateEvent;
@@ -122,6 +130,7 @@ socket.on('video-offer',function(data){
     myPeerConnection.addStream(localStream);
  
     socket.on('new-ice-canidate',function(data){
+      console.log('I have got a new ice canidate');
       var canidate = new RTCIceCandidate(data.candidate);
       myPeerConnection.addIceCandidate(canidate);
     });
@@ -134,6 +143,7 @@ socket.on('video-offer',function(data){
       socket.emit('video-answer',{
         sdp: myPeerConnection.localDescription,
       });
+      console.log('I have sent a video answer!');
     });
   })
   .catch(function(err){
