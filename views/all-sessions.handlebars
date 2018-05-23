@@ -3,6 +3,7 @@
   th,
   td {
     border: 1px solid black;
+    height: 41px;
   }
 
   .cancel-btn {
@@ -14,7 +15,7 @@
   }
 </style>
 
-<h4 class="text-center my-3">Welcome {{username}} </h4>
+<h4 class="text-center text-primary my-3">Welcome {{#if isHost}}trainer {{/if}}{{username}} </h4>
 <h4>{{title}}</h4>
 
 
@@ -39,15 +40,15 @@
     <!--  { {#unless isHost} } -->
     <td class="nav-item">
       <a name="add" id="add-{{this.id}}" data-session-id="{{this.id}}" data-user_id="{{../user_id}}" data-logon-id="{{../logon_id2}}"
-        class="btn btn-sm m-1 btn-secondary register-btn" role="button">register</a>
+        class="btn btn-sm m-1 btn-success text-white register-btn " role="button">register</a>
       {{!--
       <a href=/api/client/register> register </a> --}}
 
-      <a name="remove" id="cancel-{{this.id}}" data-session_id="{{this.id}}" data-user_id="{{../user_id}}" class="btn btn-sm m-1 btn-secondary cancel-btn"
+      <a name="remove" id="cancel-{{this.id}}" data-session_id="{{this.id}}" data-user_id="{{../user_id}}" class="btn btn-sm m-1 btn-danger text-white cancel-btn"
         role="button">cancel</a>
 
       <a name="join" href="/join-session/{{this.conn_info}}" id="join-{{this.id}}" data-session-id="{{this.id}}" data-user_id="{{../user_id}}" data-logon-id="{{../logon_id2}}"
-        class="btn btn-sm m-1 btn-secondary join-btn" role="button">Join session</a>
+        class="btn btn-sm m-1 btn-primary text-white join-btn" role="button">Join session</a>
 
       {{!--
       <a href=/api/client/register> register </a> --}}
