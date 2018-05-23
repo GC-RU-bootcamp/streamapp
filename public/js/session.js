@@ -28,16 +28,23 @@ var handleICECandidateEvent = function(event) {
 };
 
 var handleAddStreamEvent = function(event) {
+  console.log(event);
   var newRemoteVideo = document.createElement('video');
   var newRemoteAudio = document.createElement('audio');
   newRemoteVideo.setAttribute('autoplay',true);
   newRemoteAudio.setAttribute('autoplay',true);
+  //newRemoteVideo.setAttribute('data-id',);
+  //newRemoteAudio.setAttribute('data-id',);
   newRemoteVideo.srcObject = event.stream;
   newRemoteAudio.srcObject = event.stream;
   var target = document.getElementById('remote');
   target.appendChild(newRemoteVideo);
   target.appendChild(newRemoteAudio);
-}
+};
+
+//var handleRemoveStreamEvent = function(){
+//};
+
 
 socket.emit('room',uuid);
 
@@ -74,16 +81,20 @@ socket.on('signal-ready',function(data){
       myPeerConnection.setLocalDescription(offer);
     })
     .then(function(){
+
       var sdpData = {
         sdp: myPeerConnection.localDescription,
         uuid: data.uuid,
         isHost: data.isHost
       };
-      console.log("I am going to send " + sdpData);
+
+      console.log("I am going to send UUID: " + sdpData.uuid + " isHost: " + sdpData.isHost);
+      
       socket.on('video-answer',function(data){
         var description = new RTCSessionDescription(data.sdp);
         myPeerConnection.setRemoteDescription(description);
       });
+
       socket.emit('video-offer',sdpData);
     });
   })
