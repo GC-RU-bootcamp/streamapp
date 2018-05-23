@@ -1,73 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
 
-  <title>Create-Session</title>
-  <link rel="icon" href="./images/smiley.png" type="image/png" sizes="16x16">
+    <title>Create-Session</title>
+    <link rel="icon" href="./images/smiley.png" type="image/png" sizes="16x16">
 
-  
+
 </head>
+
 <body>
-    <div class="col-md-10 offset-md-1">
-        <hr class="my-5 bg-primary">
-        <h3>Register your training session!</h3>
-        <div class="form-row mt-4">
-            <div class="col-sm-6 pb-3">
-                <label for="Name">Name</label>
-                <input type="text" class="form-control" placeholder="Title of the session" id="name">
+
+    <div class="container-fluid">
+        <div class="row fixed-top">
+            <div class="col">
+                <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                    <a class="navbar-brand" href="#">
+                        <img src="images/ICEPeers.png" width="30" height="30" class="d-inline-block align-top" alt=""> Überlift
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/all-sessions">Find Sessions</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/my-sessions">My Sessions</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/session-history">Past Sessions</a>
+                            </li>
+
+                        </ul>
+                        <a class="btn btn-primary border ml-5" href="/logout" role="button"> Logout</a>
+                    </div>
+                </nav>
             </div>
-            <div class="col-sm-6 pb-3">
-                <label for="Date">Date</label>
-                <input type="text" class="form-control" placeholder="YYYY:MM:DD" id="date">
-            </div>
-            <div class="col-sm-6 pb-3">
-                <label for="Time">Time</label>
-                <input type="text" class="form-control" placeholder="HH:MM" id="time">
-            </div>
-            <div class="col-sm-3 pb-3">
-                <label for="Cost">Cost</label>
-                <input type="text" class="form-control" placeholder="Amount needed to sign-up (USD)" id="cost">
-            </div>
-            <div class="col-sm-3 pb-3">
-              <label class="mr-5">Is there a min/max # of clients?</label>
-              <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="null" value="option1">
-                  <label class="form-check-label" for="inlineRadio1">Yes</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="not-null" value="option2">
-                <label class="form-check-label" for="inlineRadio2">No</label>
-              </div>
-            </div>
-            <div class="col-md-6 pb-3">
-              <label for="Description">Description</label>
-              <textarea class="form-control" id="description"></textarea>
-              <small class="text-info">
-                Add information about the session here.
-              </small>
-            </div>
-            <div class="col-sm-3 pb-3" style="visibility: hidden" id="min-col">
-                <label for="minimum">Min clients</label>
-                <input type="text" class="form-control" id="minimum">
-            </div>
-            <div class="col-sm-3 pb-3" style="visibility: hidden" id="max-col">
-                <label for="maximum">Max clients</label>
-                <input type="text" class="form-control"  id="maximum">
-            </div>
-            <div class="col-sm-3 pb-3 mr-auto">
-              <button class="btn btn-primary" id="submit">Submit</button>
-            </div>
-          </div>
         </div>
+        <div class="row my-5">
+
+            <div class="col-md-10 offset-md-1 my-4">
+                <h3 >Register your training session!</h3>
+                <div class="form-row mt-4">
+                    <div class="col-sm-6 pb-3">
+                        <label for="Name">Name</label>
+                        <input type="text" class="form-control" placeholder="Title of the session" id="name">
+                    </div>
+                    <div class="col-sm-6 pb-3">
+                        <label for="Date">Date</label>
+                        <input type="text" class="form-control" placeholder="YYYY:MM:DD" id="date">
+                    </div>
+                    <div class="col-sm-6 pb-3">
+                        <label for="Time">Time</label>
+                        <input type="text" class="form-control" placeholder="HH:MM" id="time">
+                    </div>
+                    <div class="col-sm-3 pb-3">
+                        <label for="Cost">Cost</label>
+                        <input type="text" class="form-control" placeholder="Amount needed to sign-up (USD)" id="cost">
+                    </div>
+                    <div class="col-sm-3 pb-3">
+                        <label class="mr-5">Is there a min/max # of clients?</label>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="null" value="option1">
+                            <label class="form-check-label" for="inlineRadio1">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="not-null" value="option2">
+                            <label class="form-check-label" for="inlineRadio2">No</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 pb-3">
+                        <label for="Description">Description</label>
+                        <textarea class="form-control" id="description"></textarea>
+                        <small class="text-info">
+                            Add information about the session here.
+                        </small>
+                    </div>
+                    <div class="col-sm-3 pb-3" style="visibility: hidden" id="min-col">
+                        <label for="minimum">Min clients</label>
+                        <input type="text" class="form-control" id="minimum">
+                    </div>
+                    <div class="col-sm-3 pb-3" style="visibility: hidden" id="max-col">
+                        <label for="maximum">Max clients</label>
+                        <input type="text" class="form-control" id="maximum">
+                    </div>
+                    <div class="col-sm-3 pb-3 mr-auto">
+                        <button class="btn btn-primary" id="submit">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="bg-primary rounded p-2 m-0 text-center text-light fixed-bottom">
+                © 2018 Überlift ---- Created by Gary Cender, Dave Fischer &amp; Derrick Gill.
+               </footer>
     </div>
-</div>
-<script
-  src="https://code.jquery.com/jquery-3.3.1.js"
-></script>
-<script src="../js/createSession.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="../js/createSession.js"></script>
 </body>
+
 </html>
