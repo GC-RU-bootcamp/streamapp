@@ -14,9 +14,42 @@
   </head>
   <body>
       <div class="container-fluid">
+          <div class="row fixed-top">
+              <div class="col">
+                <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                  <a class="navbar-brand" href="#">
+                    <img src="images/ICEPeers.png" width="30" height="30" class="d-inline-block align-top" alt="">
+                    Überlift
+                  </a>
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav ml-auto">
+                      <li class="nav-item">
+                        <a class="nav-link" href="/all-sessions">Find Sessions</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="/my-sessions">My Sessions</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="/session-history">Past Sessions</a>
+                      </li>
+        
+                      {{#if isHost}}
+                      <li class="nav-item">
+                        <a class="nav-link" href="/create-session">Create Session</a>
+                      </li>
+                      {{/if}}
+                    </ul>
+                    <a class="btn btn-primary border ml-5" href="/logout" role="button"> Logout</a>
+                  </div>
+                </nav>
+              </div>
+            </div>
         <div class="row">
           <div class="col">
-            <h1 class="my-5 ">SESSION PAGE STUB</h1>
+            <h1 class="my-5 ">SESSION </h1>
             <video autoplay id="local-video"></video>
             <audio autoplay id="local-audio"></audio>
           </div>
