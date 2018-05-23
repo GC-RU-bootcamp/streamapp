@@ -1,26 +1,27 @@
 {{!-- Host Sessions 
    This section displays all the sessions and the attendees for that session when expanded.  IF the session occurs in the future, the button to start the Stream will be displayed. --}}
-{{#if hostSessions}}
+{{#if sessions}}
   <div class="body" id="accordion">
-{{#each hostSessions}}
+  
+{{#each sessions}}
   <div class="card">
     <div class="card-header" id="hs-heading-{{@index}}">
       <h5 class="mb-0">
-        <button class="btn btn-link" data-toggle="collapse" data-target="#collapse"+"-{{@index}}" data-sessionID={{this.conn_info}} aria-expanded="true" aria-controls="collapse"+"-{{@index}}">
-          {{this.name}} + "  " + {{this.item_date}} 
+        <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-{{@index}}" data-sessionID={{this.conn_info}} aria-expanded="false" aria-controls="collapse-{{@index}}">
+          {{this.name}}  {{this.item_date}} 
          </button>
       </h5>
     </div>
-    <div id="collapse"+"-{{@index}}" class="collapse show" aria-labelledby="hs-heading-{{@index}}" data-parent="#accordion">
+    <div id="collapse-{{@index}}" class="collapse show" aria-labelledby="hs-heading-{{@index}}" data-parent="#accordion">
       <div class="card-body">
-        <button class="btn btn-12 btn-md-12 btn-lg-12 btn-danger" name="startStream"+{{this.conn_info}}>Start Session</button>  
-        {{#each attends}
-         <p>{{this.fst_nam}} + " " + {{this.lst_nam}} + " " {{this.ratiing}}</p>
-        {{/each}}   
-      </div>
+        <button href="/join-session/{{this.conn_info}}" class="btn btn-12 btn-md-12 btn-lg-12 btn-danger" name="startStream-{{this.conn_info}}">Start Session</button>   
+           {{#each this.people_sessions}} 
+              <p>{{this.Person.fst_nam}}  {{this.Person.lst_nam}}  {{this.Person.logon_id}}</p> 
+           {{/each}}
+     </div>
     </div>
-  </div>
+  </div> 
 {{/each}}
-  {{!-- Put JS script here to invoke event handlers to call the Stream page --}}
- </div> 
+{{else}}
+  <h2 href="/create-session">You have no sessions; Create a Session</h2>
 {{/if}}
