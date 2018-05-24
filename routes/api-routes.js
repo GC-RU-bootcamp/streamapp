@@ -358,12 +358,14 @@ module.exports = function (app) {
     }).then(function(result){
       if(req.user.id === result.people_id){
         res.json({
-          isHost: 1
+          isHost: 1,
+          name: result.name
         })
       } else{
         res.json({
-          isHost: 0
-        })
+          isHost: 0,
+          name:result.name
+        });
       }
     }).catch(function(){
       res.status(500).end()

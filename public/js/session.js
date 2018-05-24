@@ -9,6 +9,14 @@ var constraints = {
   audio:true
 };
 
+$('.slick').slick({
+  infinite: true,
+  slidesToShow: 1,
+  arrows: true,
+  appendArrows: $('#arrows')
+});
+				
+
 var servers = {
    "iceServers": [{ "urls": "stun:stun.l.google.com:19302" }]
   };
@@ -29,24 +37,31 @@ var handleICECandidateEvent = function(event) {
 
 var handleAddStreamEvent = function(event) {
   console.log('Remote Stream has been received!');
+  var id = event.stream.id;
+
+  var tracks = [];
+  tracks.push(event.stream.getTracks()[0])
+  tracks.push(event.stream.getTracks()[1])
+
   var newRemoteVideo = document.createElement('video');
   var newRemoteAudio = document.createElement('audio');
-  console.log('Created new remote elements');
-  newRemoteVideo.setAttribute('autoplay',true);
+  newRemoteVideo.setAttribute('controls',true);
   newRemoteAudio.setAttribute('autoplay',true);
-  //newRemoteVideo.setAttribute('data-id',);
-  //newRemoteAudio.setAttribute('data-id',);
+  newRemoteVideo.id = id + "-video";
+  newRemoteAudio.id = id + "-audio";
   newRemoteVideo.srcObject = event.stream;
   newRemoteAudio.srcObject = event.stream;
-  console.log('Set remote elements with stream');
-  var target = document.getElementById('remote');
-  target.appendChild(newRemoteVideo);
-  target.appendChild(newRemoteAudio);
-  console.log('Append the remote elements to the target row');
+
+  $('.slick').slick('slickAdd',newRemoteVideo);
+
+  //var target = document.getElementById('remote');
+  //target.appendChild(newRemoteVideo);
+  //target.appendChild(newRemoteAudio);
 };
 
-//var handleRemoveStreamEvent = function(){
-//};
+
+
+
 socket.on('no-host',function(){
   console.log('we tried to send a video offer but there was no host!');
 });
@@ -56,6 +71,8 @@ socket.emit('room',uuid);
 socket.on('host-check',function(){
   $.get("/api/session/"+uuid)
   .then(function(data) {
+    document.getElementById('session-name').innerHTML = data.name;
+    //send data back to server
     data.uuid = uuid;
     socket.emit('host-answer',data);
   });
@@ -73,7 +90,8 @@ socket.on('signal-ready',function(data){
    
     myPeerConnection.onicecandidate = handleICECandidateEvent;
     myPeerConnection.onaddstream = handleAddStreamEvent;
-    
+    myPeerConnection.onremovetrack 
+
     myPeerConnection.addStream(localStream);
   
     socket.on('new-ice-canidate',function(data){
