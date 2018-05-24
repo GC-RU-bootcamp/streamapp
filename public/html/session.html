@@ -8,15 +8,14 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" >
   </head>
   <body>
-      <div class="container-fluid">
-          <div class="row fixed-top">
-              <div class="col">
-                <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+      <div class="row fixed-top">
+        <div class="col">
+          <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
                   <a class="navbar-brand" href="#">
                     <img src="images/ICEPeers.png" width="30" height="30" class="d-inline-block align-top" alt="">
                     Überlift
@@ -35,28 +34,61 @@
                       <li class="nav-item">
                         <a class="nav-link" href="/session-history">Past Sessions</a>
                       </li>
-
                     </ul>
                     <a class="btn btn-primary border ml-5" href="/logout" role="button"> Logout</a>
                   </div>
-                </nav>
-              </div>
-            </div>
-        <div class="row">
-          <div class="col">
-            <h1 class="my-5 ">SESSION PAGE STUB</h1>
-            <video autoplay id="local-video" muted="muted"></video>
-            <audio autoplay id="local-audio" muted="muted"></audio>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col" id="remote">
-          </div>
+          </nav>
         </div>
       </div>
+    <div class="row">
+      <div class="col-3">
+
+      </div>
+      <div class="col-6">
+        <h1 class="my-5" id="session-name"></h1>
+        <video autoplay id="local-video" class="mx-3" muted="muted"></video>
+        <audio autoplay id="local-audio" muted="muted"></audio>
+      </div>
+      <div class="col-3">
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-4">
+
+      </div>
+      <div class="col-4">
+        <div class="slick" id="remote">
+
+        </div>
+      </div>
+      <div class="col-4">
+
+      </div>
+    </div>
+    <div class="row my-4">
+      <div class="col-5">
+
+      </div>
+      <div class="col-2" id="arrows">
+
+      </div>
+      <div class="col-5">
+
+      </div>
+    </div>
+    <div class="row fixed-bottom bg-primary ">
+        <div class="col">
+          <p class="text-center text-light p-0 m-0">
+              Copyright © 2018 Überlift
+          </p>
+        </div>
+      </div>
+    </div>
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/6.1.5/adapter.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script src="../js/session.js"></script>
   </body>
 </html>
