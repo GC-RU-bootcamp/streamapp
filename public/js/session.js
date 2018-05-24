@@ -39,24 +39,21 @@ var handleAddStreamEvent = function(event) {
   console.log('Remote Stream has been received!');
   var id = event.stream.id;
 
-  var tracks = [];
-  tracks.push(event.stream.getTracks()[0])
-  tracks.push(event.stream.getTracks()[1])
-
   var newRemoteVideo = document.createElement('video');
   var newRemoteAudio = document.createElement('audio');
-  newRemoteVideo.setAttribute('controls',true);
+  newRemoteVideo.setAttribute('autoplay',true);
   newRemoteAudio.setAttribute('autoplay',true);
+  newRemoteVideo.setAttribute('width',250);
+  newRemoteVideo.setAttribute('height',250);
   newRemoteVideo.id = id + "-video";
   newRemoteAudio.id = id + "-audio";
   newRemoteVideo.srcObject = event.stream;
   newRemoteAudio.srcObject = event.stream;
 
-  $('.slick').slick('slickAdd',newRemoteVideo);
 
-  //var target = document.getElementById('remote');
-  //target.appendChild(newRemoteVideo);
-  //target.appendChild(newRemoteAudio);
+  var target = document.getElementById('remote');
+  target.appendChild(newRemoteVideo);
+  target.appendChild(newRemoteAudio);
 };
 
 
