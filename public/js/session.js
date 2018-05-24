@@ -9,13 +9,6 @@ var constraints = {
   audio:true
 };
 
-$('.slick').slick({
-  infinite: true,
-  slidesToShow: 1,
-  arrows: true,
-  appendArrows: $('#arrows')
-});
-				
 
 var servers = {
    "iceServers": [{ "urls": "stun:stun.l.google.com:19302" }]
