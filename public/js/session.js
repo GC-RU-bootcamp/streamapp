@@ -6,16 +6,12 @@ var uuid = urlArray[urlArray.length-1];
 
 var constraints = {
   video:true,
-  audio:true
+  audio:{
+    echoCancellation:true,
+    noiseSuppression: true,
+    volume: 0.2
+  }
 };
-
-$('.slick').slick({
-  infinite: true,
-  slidesToShow: 1,
-  arrows: true,
-  appendArrows: $('#arrows')
-});
-				
 
 var servers = {
    "iceServers": [{ "urls": "stun:stun.l.google.com:19302" }]
@@ -36,24 +32,28 @@ var handleICECandidateEvent = function(event) {
 };
 
 var handleAddStreamEvent = function(event) {
+
   console.log('Remote Stream has been received!');
   var id = event.stream.id;
 
   var newRemoteVideo = document.createElement('video');
   var newRemoteAudio = document.createElement('audio');
+
   newRemoteVideo.setAttribute('autoplay',true);
-  newRemoteAudio.setAttribute('autoplay',true);
-  newRemoteVideo.setAttribute('width',250);
-  newRemoteVideo.setAttribute('height',250);
+
+  newRemoteVideo.setAttribute('width',350);
+  newRemoteVideo.setAttribute('height',350);
+
   newRemoteVideo.id = id + "-video";
   newRemoteAudio.id = id + "-audio";
+
   newRemoteVideo.srcObject = event.stream;
-  newRemoteAudio.srcObject = event.stream;
 
 
   var target = document.getElementById('remote');
+
   target.appendChild(newRemoteVideo);
-  target.appendChild(newRemoteAudio);
+
 };
 
 
@@ -81,7 +81,7 @@ socket.on('signal-ready',function(data){
     console.log('I got the signal to start the webRTC!');
     localStream = stream;
     localVideo.srcObject = stream;
-    localAudio.srcObject = stream;
+    //localAudio.srcObject = stream;
 
     var myPeerConnection = new RTCPeerConnection(servers);
    
@@ -138,7 +138,7 @@ socket.on('video-offer',function(data){
   .then(function(stream){
     localStream = stream;
     localVideo.srcObject = stream;
-    localAudio.srcObject = stream;
+    //localAudio.srcObject = stream;
     
     var description = new RTCSessionDescription(data.sdp);
     myPeerConnection.setRemoteDescription(description);
